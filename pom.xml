@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>framework-sssm-mvc</groupId>
+    <artifactId>chenzhengyou.com</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>ssm</module>
+    </modules>
+
+
+    <properties>
+        <!-- maven依赖-->
+        <junit.version>4.12</junit.version>
+        <jstl.version>1.2</jstl.version>
+
+        <servlet-api.version>2.5</servlet-api.version>
+        <javax.servlet-apiversion>3.1.0</javax.servlet-apiversion>
+        <javaee-api.version>7.0</javaee-api.version>
+        <jsp-api.version>2.2</jsp-api.version>
+        <!--下面这两个是springAOP需要用到-->
+        <aspectjweaver.version>1.7.2</aspectjweaver.version>
+        <persistence-api.version>1.0.2</persistence-api.version>
+        <!-- springmvc -->
+        <spring.version>4.3.4.RELEASE</spring.version>
+        <mybatis.version>3.3.1</mybatis.version>
+        <mybatis-spring.version>1.2.4</mybatis-spring.version>
+        <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
+        <!-- 连接池 -->
+        <commons-dbcp.version>1.4</commons-dbcp.version>
+        <!-- 日志 -->
+        <!--<log4j.version>1.2.17</log4j.version>-->
+        <!--<slf4j-api.version>1.7.20</slf4j-api.version>-->
+        <!--<org.slf4j.version>1.7.7</org.slf4j.version>-->
+        <!-- 校验依赖 -->
+        <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
+        <validation-api.version>1.1.0.Final</validation-api.version>
+
+        <commons-fileupload.version>1.3.1</commons-fileupload.version>
+        <commons-base.io.version>2.4</commons-base.io.version>
+
+        <!--<jackson-core.version>2.8.1</jackson-core.version>-->
+        <!--<jackson-mapper-asl.version>1.9.13</jackson-mapper-asl.version>-->
+    </properties>
+
+
+    <dependencies>
+
+        <!-- 1)junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <!--<scope>test</scope>-->
+        </dependency>
+
+        <!-- 2)jstl -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-apiversion}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- java ee jar 包 -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${javaee-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>${jsp-api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 4)springmvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>springmvc-web</artifactId>-->
+        <!--<version>${springmvc.version}</version>-->
+        <!--</dependency>-->
+        <!-- springmvc-webmvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- springmvc-orm-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!-- springmvc-tx-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <!--下面两个提供对 AspectJ 的支持，是 springmvc-aspects 所需要依赖的-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectjweaver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>${persistence-api.version}</version>
+        </dependency>
+
+
+        <!--这个一定要有、不用报错-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>3.2.4.RELEASE</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.25-incubating</version>
+        </dependency>
+
+
+        <!-- 5)mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
+        <!-- 6)mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+        <!-- 7)mybatis-springmvc -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>${mybatis-spring.version}</version>
+            <!--<scope>runtime</scope>-->
+        </dependency>
+
+        <!-- commons-dbcp -->
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>${commons-dbcp.version}</version>
+        </dependency>
+
+
+        <!-- 日志 -->
+        <!--使用logback start-->
+        <!--导入这个的时候会自动导入：slf4j-api、logback-core，所以我们还需要导入：log4j和logback-ext-springmvc-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.logback-extensions</groupId>
+            <artifactId>logback-ext-spring</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+        <!--使用logback end-->
+        <!-- 日志文件管理包 end -->
+
+        <!-- 校验依赖 -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator.version}</version>
+        </dependency>
+        <!-- validation-api -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
+        </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>commons-logging</groupId>-->
+        <!--<artifactId>commons-logging</artifactId>-->
+        <!--<version>1.2</version>-->
+        <!--</dependency>-->
+        <!-- commbase.ios-io -->
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+
+        <!-- commons-fileupload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${commons-fileupload.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-base.io</artifactId>
+                    <groupId>commons-base.io</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!-- jackson-core -->
+        <!--<dependency>-->
+        <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--<artifactId>jackson-core</artifactId>-->
+        <!--<version>${jackson-core.version}</version>-->
+        <!--</dependency>-->
+        <!-- jackson-mapper-asl -->
+        <!--<dependency>-->
+        <!--<groupId>org.codehaus.jackson</groupId>-->
+        <!--<artifactId>jackson-mapper-asl</artifactId>-->
+        <!--<version>${jackson-mapper-asl.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--<artifactId>jackson-annotations</artifactId>-->
+        <!--<version>2.8.1</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>com.fasterxml.jackson.module</groupId>-->
+        <!--<artifactId>jackson-module-paranamer</artifactId>-->
+        <!--<version>2.7.4</version>-->
+        <!--<exclusions>-->
+        <!--<exclusion>-->
+        <!--<artifactId>jackson-core</artifactId>-->
+        <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--</exclusion>-->
+        <!--<exclusion>-->
+        <!--<artifactId>jackson-annotations</artifactId>-->
+        <!--<groupId>com.fasterxml.jackson.core</groupId>-->
+        <!--</exclusion>-->
+        <!--</exclusions>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>com.alibaba</groupId>-->
+        <!--<artifactId>fastjson</artifactId>-->
+        <!--<version>1.2.3</version>-->
+        <!--</dependency>-->
+    </dependencies>
+
+
+    <build>
+        <!-- 项目名称 -->
+        <finalName>${project.artifactId}</finalName>
+
+        <!-- 服务器配置插件 -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <port>8081</port>
+                    <path>/</path>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <!--表示把java目录下的有关xml文件,properties文件编译/打包的时候放在resource目录下-->
+            <resource>
+                <directory>${basedir}/src/main/java</directory>
+                <includes>
+                    <include>**/*.config</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>
+        </resources>
+
+
+    </build>
+</project>

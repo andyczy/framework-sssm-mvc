@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/tx
+	   http://www.springframework.org/schema/tx/spring-tx.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+	<!--核心学点1 -->
+	<!--注解映射器 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/> -->
+	<!--注解适配器 -->
+	<!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/> -->
+
+	<!-- 使用 mvc:annotation-driven代替上边注解映射器和注解适配器配置 -->
+	<!-- mvc:annotation-driven默认加载很多的参数绑定方法， -->
+	<!-- 比如json转换解析器就默认加载了，如果使用mvc:annotation-driven， -->
+	<!-- 不用配置上边的RequestMappingHandlerMapping和RequestMappingHandlerAdapter， -->
+
+	<!-- 实际开发时使用mvc:annotation-driven   -->
+	<!--<mvc:annotation-driven conversion-service="conversionService"-->
+						   <!--validator="validator"/>-->
+	<mvc:annotation-driven />
+
+	<!-- 静态资源映射 -->
+	<mvc:resources location="/resources/css/" mapping="/css/**"/>
+	<mvc:resources location="/resources/js/" mapping="/js/**"/>
+	<mvc:resources location="/resources/images/" mapping="/images/**"/>
+	<mvc:resources location="/resources/template/" mapping="/template"/>
+
+
+	<!-- 配置方式2 -->
+	<!-- 自定义webBinder -->
+	<bean id="customBinder"
+		  class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+		<!--<property name="validator" ref="validator"/>-->
+	</bean>
+	<!-- 注解适配器 -->
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<!--<property name="webBindingInitializer" ref="customBinder"></property>-->
+	</bean>
+
+
+
+	<!-- 1、配置freeMarker的模板路径 -->
+	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="WEB-INF/ftl/"/>
+		<property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	<!-- freemarker视图解析器 -->
+	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="suffix" value=".ftl"/>
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+		<!-- 此变量值为pageContext.request, 页面使用方法：rc.contextPath -->
+		<property name="requestContextAttribute" value="rc"/>
+	</bean>
+
+	<!--2、ViewResolver 视图解析器-->
+	<!--用于支持Servlet、JSP视图解析-->
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/jsp/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+
+
+
+
+	<!-- 核心学点3 -->
+	<!-- 自定义参数绑定 -->
+	<!--<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">-->
+		<!--&lt;!&ndash; 转换器 &ndash;&gt;-->
+		<!--<property name="converters">-->
+			<!--<list>-->
+				<!--&lt;!&ndash; 日期类型转换 &ndash;&gt;-->
+				<!--<bean class="org.chenzhengyou.com.ssm.utils.converter.CustomDateConverter"/>-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+
+	<!--&lt;!&ndash; 校验器validator &ndash;&gt;-->
+	<!--<bean id="validator"-->
+		  <!--class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">-->
+		<!--&lt;!&ndash; hibernate校验器&ndash;&gt;-->
+		<!--<property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>-->
+		<!--&lt;!&ndash; 指定校验使用的资源文件，在文件中配置校验错误信息，如果不指定则默认使用classpath下的ValidationMessages.config &ndash;&gt;-->
+		<!--<property name="validationMessageSource" ref="messageSource"/>-->
+	<!--</bean>-->
+
+	<!--&lt;!&ndash; 校验错误信息配置文件 &ndash;&gt;-->
+	<!--<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">-->
+		<!--&lt;!&ndash; 资源文件名&ndash;&gt;-->
+		<!--<property name="basenames">-->
+			<!--<list>-->
+				<!--<value>config.customValidationMessages</value>-->
+			<!--</list>-->
+		<!--</property>-->
+		<!--&lt;!&ndash; 资源文件编码格式 &ndash;&gt;-->
+		<!--<property name="fileEncodings" value="utf-8"/>-->
+		<!--&lt;!&ndash; 对资源文件内容缓存时间，单位秒 &ndash;&gt;-->
+		<!--<property name="cacheSeconds" value="120"/>-->
+	<!--</bean>-->
+
+
+	<!--&lt;!&ndash; 全局异常处理器:只要实现HandlerExceptionResolver接口就是全局异常处理器 &ndash;&gt;-->
+	<!--<bean class="org.chenzhengyou.com.ssm.utils.exceptionData.CustomExceptionResolver"></bean>-->
+	<!--&lt;!&ndash;error是出错页面&ndash;&gt;-->
+	<!--&lt;!&ndash; configure SimpleMappingExceptionResolver &ndash;&gt;-->
+	<!--&lt;!&ndash;<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">&ndash;&gt;-->
+		<!--&lt;!&ndash;<property name="exceptionMappings">&ndash;&gt;-->
+			<!--&lt;!&ndash;<props>&ndash;&gt;-->
+				<!--&lt;!&ndash;<prop key="java.lang.ArithmeticException">error</prop>&ndash;&gt;-->
+			<!--&lt;!&ndash;</props>&ndash;&gt;-->
+		<!--&lt;!&ndash;</property>&ndash;&gt;-->
+	<!--&lt;!&ndash;</bean>&ndash;&gt;-->
+
+
+	<!--&lt;!&ndash; 文件上传 &ndash;&gt;-->
+	<!--<bean id="multipartResolver"-->
+		  <!--class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+		<!--&lt;!&ndash; 设置上传文件的最大尺寸为5MB &ndash;&gt;-->
+		<!--<property name="maxUploadSize">-->
+			<!--<value>5242880</value>-->
+		<!--</property>-->
+	<!--</bean>-->
+
+
+	<!--拦截器:springmvc拦截器针对HandlerMapping进行拦截设置，-->
+	<!--如果在某个HandlerMapping中配置拦截，经过该 HandlerMapping映射成功的handler最终使用该 拦截器。-->
+	<!--实际开发不使用这种-->
+	<!--<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">-->
+		<!--<property name="interceptors">-->
+			<!--<list>-->
+				<!--<ref bean="handlerInterceptor1"/>-->
+				<!--<ref bean="handlerInterceptor2"/>-->
+			<!--</list>-->
+		<!--</property>-->
+	<!--</bean>-->
+	<!--<bean id="handlerInterceptor1" claorg.chenzhengyou.com.ssm.HandlerInterceptorDataData.HandlerInterceptor01"/>-->
+	<!--<bean id="handlerInterceptor2" claorg.chenzhengyou.com.ssm.HandlerInterceptorDataData.HandlerInterceptor02"/>-->
+
+
+	<!--&lt;!&ndash;类似全局的拦截器:springmvc配置类似全局的拦截器，springmvc框架将配置的类似全局的拦截器注入到每个HandlerMapping中。&ndash;&gt;-->
+	<!--<mvc:interceptors>-->
+		<!--&lt;!&ndash;多个拦截器,顺序执行 &ndash;&gt;-->
+		<!--&lt;!&ndash; 登陆认证拦截器 &ndash;&gt;-->
+		<!--<mvc:interceptor>-->
+			<!--<mvc:mapping path="/**"/>-->
+			<!--<bean claorg.chenzhengyou.com.ssm.HandlerInterceptorDataData.LoginInterceptor"></bean>-->
+		<!--</mvc:interceptor>-->
+		<!--<mvc:interceptor>-->
+			<!--&lt;!&ndash; /**表示所有url包括子url路径 &ndash;&gt;-->
+			<!--<mvc:mapping path="/**"/>-->
+			<!--<bean claorg.chenzhengyou.com.ssm.HandlerInterceptorDataData.HandlerInterceptor01"></bean>-->
+		<!--</mvc:interceptor>-->
+		<!--<mvc:interceptor>-->
+			<!--<mvc:mapping path="/**"/>-->
+			<!--<bean claorg.chenzhengyou.com.ssm.HandlerInterceptorDataData.HandlerInterceptor02"></bean>-->
+		<!--</mvc:interceptor>-->
+	<!--</mvc:interceptors>-->
+
+</beans>

@@ -1,0 +1,1 @@
+你好啊，${user}，第一天学习freemarker!
