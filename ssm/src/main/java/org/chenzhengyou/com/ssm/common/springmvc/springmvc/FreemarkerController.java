@@ -1,4 +1,4 @@
-package org.chenzhengyou.com.mvc.springmvc;
+package org.chenzhengyou.com.ssm.common.springmvc.springmvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

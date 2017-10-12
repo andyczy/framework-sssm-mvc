@@ -1,4 +1,4 @@
-package org.chenzhengyou.com.mvc.freemarker;
+package org.chenzhengyou.com.ssm.common.springmvc.freemarker;
 
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.template.Configuration;
