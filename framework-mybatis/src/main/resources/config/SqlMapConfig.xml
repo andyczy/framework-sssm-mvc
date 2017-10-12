@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!--
+    每个基于mybatis的应用都是以一个SqlSessionFactory的实例为中心。
+    SqlSessionFactory的实例通过SqlSessionFactoryBuilder获得。
+    而SqlSessionFactoryBulider则可以从xml配置文件或者一个预先定制的Configuration的实例构建出SqlSessionFactory的实例。
+    官网：http://www.mybatis.org/mybatis-3/zh/configuration.html
+-->
+
+<configuration>
+
+
+    <!-- properties:这些属性都是可外部配置且可动态替换的，既可以在典型的 Java -->
+    <!-- 属性文件中配置,亦可通过 properties 元素的子元素来传递-->
+    <properties resource="properties/db.properties">
+        <!--properties中还可以配置一些属性名和属性值、 -->
+        <!-- <property nabase.jdbcjdbc.driver" value=""/> -->
+    </properties>
+
+
+    <!-- settings:这是 MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为-->
+    <!-- 有问题！！！lazyLoadingEnabled value="ture"报错！！！-->
+    <!-- 听说实际开发不怎么用、就不用去管了！！！-->
+    <!-- 调整设置属性：mybatis中级为重要的调整设置，需要时再设置 -->
+    <!--<settings>-->
+    <!--<setting name="cacheEnabled" value="true"/>-->
+    <!--<setting name="lazyLoadingEnabled" value="true"/>-->
+    <!--<setting name="multipleResultSetsEnabled" value="true"/>-->
+    <!--<setting name="useColumnLabel" value="true"/>-->
+    <!--<setting name="useGeneratedKeys" value="false"/>-->
+    <!--<setting name="autoMappingBehavior" value="PARTIAL"/>-->
+    <!--<setting name="autoMappingUnknownColumnBehavior" value="WARNING"/>-->
+    <!--<setting name="defaultExecutorType" value="SIMPLE"/>-->
+    <!--<setting name="defaultStatementTimeout" value="25"/>-->
+    <!--<setting name="defaultFetchSize" value="100"/>-->
+    <!--<setting name="safeRowBoundsEnabled" value="false"/>-->
+    <!--<setting name="mapUnderscoreToCamelCase" value="false"/>-->
+    <!--<setting name="localCacheScope" value="SESSION"/>-->
+    <!--<setting name="jdbcTypeForNull" value="OTHER"/>-->
+    <!--<setting name="lazyLoadTriggerMethods" value="equals,clone,hashCode,toString"/>-->
+    <!--</settings>-->
+
+
+    <!-- typeAliases:类型别名是为 Java 类型设置一个短的名字。它只和 XML-->
+    <!-- 配置有关，存在的意义仅在于用来减少类完全限定名的冗余.-->
+    <typeAliases>
+        <!-- 针对单个别名定义 type：类型的路径 alias：别名 -->
+        <typeAlias type="cn.com.czy.mybatis.pojo.UserCustom" alias="UserCustom"/>
+        <!--<typeAlias type="cn.com.czy.mybatis.pojo.User" alias="user"/>-->
+        <!-- 批量别名定义指定包名，mybatis自动扫描包中的po类， -->
+        <!-- 自动定义别名，别名就是类名（首字母大写或小写都可以） -->
+        <!--<package name="cn.com.czy.mybatis" ></package>-->
+    </typeAliases>
+
+
+    <!-- environments配置环境属性:和spring整合后environments配置将废除 -->
+    <environments default="development">
+        <environment id="development">
+            <!-- 事务管理属性：使用jdbc事务管理，事务控制由mybatis -->
+            <transactionManager type="JDBC"/>
+            <!-- 数据源属性：数据库连接池，由mybatis管理 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!-- 映射器属性：加载映射文件 -->
+    <mappers>
+        <!--通过resource方法一次加载一个映射文件 -->
+        <mapper resource="sqlMapper/userFirst.xml"/>
+        <!--<mapper resource="sqlMapper/userMapper.xml"/>-->
+        <!--<mapper resource="sqlMapper/OrdersMapperCustom.xml"/>-->
+        <!--&lt;!&ndash; 批量加载mapper 指定mapper接口的包名，mybatis自动扫描包下边所有mapper接口进行加载 &ndash;&gt;-->
+        <!-- 遵循一些规范：需要将mapper接口类名和mapper.xml映射文件名称保持一致，且在一个目录中上边规范的前提是：
+                使用的是mapper代理方法。-->
+        <!--<package name="cn.com.czy.mybatis.two.mapper" />-->
+    </mappers>
+
+
+
+
+    
+    
+    <!--
+        typeHandlers:若想映射枚举类型 Enum，则需要从 EnumTypeHandler 或者 EnumOrdinalTypeHandler 中选一个来使用。
+        比如说我们想存储取近似值时用到的舍入模式。默认情况下，MyBatis 会利用 EnumTypeHandler 来把 Enum 值转换成对应的名字。
+    -->
+    <!--<typeHandlers>-->
+    <!--</typeHandlers>-->
+
+
+    <!--databaseIdProvider:MyBatis 可以根据不同的数据库厂商执行不同的语句，这种多厂商的支持是基于映射语句中的 databaseId 属性。
+     MyBatis 会加载不带 databaseId 属性和带有匹配当前数据库 databaseId 属性的所有语句。 如果同时找到带有 databaseId 和不带
+     databaseId 的相同语句，则后者会被舍弃。 为支持多厂商特性只要像下面这样在 mybatis-config.xml 文件中加入 databaseIdProvider
+     即可：-->
+    <!--<databaseIdProvider type="DB_VENDOR" />-->
+
+
+
+
+    <!--插件（plugins）
+        MyBatis 允许你在已映射语句执行过程中的某一点进行拦截调用。默认情况下，MyBatis 允许使用插件来拦截的方法调用包括：
+
+        Executor (update, query, flushStatements, commit, rollback, getTransaction, close, isClosed)
+        ParameterHandler (getParameterObject, setParameters)
+        ResultSetHandler (handleResultSets, handleOutputParameters)
+        StatementHandler (prepare, parameterize, batch, update, query)
+        这些类中方法的细节可以通过查看每个方法的签名来发现，或者直接查看 MyBatis 的发行包中的源代码。
+        假设你想做的不仅仅是监控方法的调用，那么你应该很好的了解正在重写的方法的行为。 因为如果在试图修改或重写已有方法的行为的时候，
+        你很可能在破坏 MyBatis 的核心模块。 这些都是更低层的类和方法，所以使用插件的时候要特别当心。
+
+        通过 MyBatis 提供的强大机制，使用插件是非常简单的，只需实现 Interceptor 接口，并指定了想要拦截的方法签名即可。-->
+    <!--<plugins>-->
+    <!--&lt;!&ndash;pagehelper分页插件配置&ndash;&gt;-->
+    <!--&lt;!&ndash; com.github.pagehelper为PageHelper类所在包名 &ndash;&gt;-->
+    <!--<plugin interceptor="com.github.pagehelper.PageHelper">-->
+    <!--&lt;!&ndash; 设置数据库类型 Oracle,Mysql,MariaDB,SQLite,Hsqldb,PostgreSQL六种数据库&ndash;&gt;-->
+    <!--<property name="dialect" value="mysql"/>-->
+    <!--&lt;!&ndash; 该参数默认为false &ndash;&gt;-->
+    <!--&lt;!&ndash; 设置为true时，会将RowBounds第一个参数offset当成pageNum页码使用 &ndash;&gt;-->
+    <!--&lt;!&ndash; 和startPage中的pageNum效果一样&ndash;&gt;-->
+    <!--<property name="offsetAsPageNum" value="true"/>-->
+    <!--&lt;!&ndash; 该参数默认为false &ndash;&gt;-->
+    <!--&lt;!&ndash; 设置为true时，使用RowBounds分页会进行count查询 &ndash;&gt;-->
+    <!--<property name="rowBoundsWithCount" value="true"/>-->
+    <!--&lt;!&ndash; 设置为true时，如果pageSize=0或者RowBounds.limit = 0就会查询出全部的结果 &ndash;&gt;-->
+    <!--&lt;!&ndash; （相当于没有执行分页查询，但是返回结果仍然是Page类型）&ndash;&gt;-->
+    <!--<property name="pageSizeZero" value="true"/>-->
+    <!--&lt;!&ndash; 3.3.0版本可用 - 分页参数合理化，默认false禁用 &ndash;&gt;-->
+    <!--&lt;!&ndash; 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages会查询最后一页 &ndash;&gt;-->
+    <!--&lt;!&ndash; 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据 &ndash;&gt;-->
+    <!--<property name="reasonable" value="true"/>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+
+
+
+</configuration>
+
+
+

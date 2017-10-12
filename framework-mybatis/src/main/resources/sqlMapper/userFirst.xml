@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 总结：
+
+    1、#{}和${}的区别(记得用#{})：
+        #{}表示一个占位符号，#{}接收输入参数，类型可以是简单类型，pojo、hashmap。
+        如果接收简单类型，#{}中可以写成value或其它名称。
+        #{}接收pojo对象值，通过OGNL读取对象中的属性值，通过属性.属性.属性...的方式获取对象属性值。
+
+        ${}表示一个拼接符号，会引用sql注入，所以不建议使用${}。
+        ${}接收输入参数，类型可以是简单类型，pojo、hashmap。
+        如果接收简单类型，${}中只能写成value。
+        ${}接收pojo对象值，通过OGNL读取对象中的属性值，通过属性.属性.属性...的方式获取对象属性值。
+
+    2、selectOne和selectList的区别：
+        selectOne表示查询出一条记录进行映射。如果使用selectOne可以实现使用selectList也可以实现（list中只有一个对象）。
+        selectList表示查询出一个列表（多条记录）进行映射。如果使用selectList查询多条记录，不能使用selectOne。
+        如果使用selectOne报错：org.apache.ibatis.exceptions.TooManyResultsException:
+        Expectomcat.one one result (or null) to be returned by selectOne(), but found: 4
+
+    3、在映射文件中通过parameterType指定输入参数的类型。
+    4、在映射文件中通过resultType指定输出结果的类型。
+ -->
+<mapper namespace="test">
+
+    <!-- 将sql语句封装到mappedStatement对象中，所以将id称为statement的id。 -->
+    <!-- parameterType：指定输入参数的类型，这里指定int型 #{}表示一个占位符号。 -->
+    <!-- resultType：指定就是单条记录所映射的java对象类型  -->
+    <!-- #{id}：其中的id表示接收输入的参数，参数名称就是id，如果输入参数是简单类型、#{}中的参数名可以任意、可以value或其它名称。 -->
+    <!-- resultType：指定sql输出结果 的所映射的java对象类型，select指定resultType表示将单条记录映射成的java对象。 -->
+    <select id="findUserById" parameterType="int" resultType="cn.com.czy.mybatis.pojo.User">
+        <!-- 需求：通过select执行id查询用户表的记录 -->
+        SELECT * FROM USER WHERE id=#{value}
+    </select>
+
+    <!-- ${}:表示拼接sql串，将接收到参数的内容不加任何修饰拼接在sql中。 使用${}拼接sql，引起sql注入。  -->
+    <select id="findUserByName" parameterType="java.lang.String" resultType="cn.com.czy.mybatis.pojo.User">
+        <!-- 根据用户名称模糊查询用户信息，可能返回多条  -->
+        SELECT * FROM USER WHERE username LIKE '%${value}%'
+    </select>
+
+
+    <!--20170502有错误-->
+    <insert id="insertUser" parameterType="cn.com.czy.mybatis.pojo.User">
+        <!-- SELECT LAST_INSERT_ID()：得到刚insert进去记录的主键值，只适用与自增主键 -->
+        <!-- keyProperty：将查询到主键值设置到parameterType指定的对象的哪个属性 -->
+        <!-- order：SELECT LAST_INSERT_ID()执行顺序，相对于insert语句来说它的执行顺序 -->
+        <!-- resultType：指定SELECT LAST_INSERT_ID()的结果类型 -->
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            <!-- 将插入数据的主键返回，返回到user对象中 -->
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        <!--sql语句-->
+        insert into user(username,birthday,sex,address)
+        value(#{username},#{birthday},#{sex},#{address})
+
+
+
+        <!--或者用这个报错-->
+         <!--使用mysql的uuid（）生成主键执行过程：-->
+         <!--首先通过uuid()得到主键，将主键设置到user对象的id属性中 其次在insert执行时，从user对象中取出id属性值-->
+        <!--<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">-->
+        <!--SELECT uuid()-->
+        <!--</selectKey>-->
+        <!--insert into user(id,username,birthday,sex,address)-->
+        <!--value(#{id},#{username},#{birthday},#{sex},#{address})-->
+    </insert>
+
+
+
+    <!-- 删除用户根据id删除用户，需要输入id值 -->
+    <delete id="deleteUser" parameterType="java.lang.Integer">
+        delete from user where id=#{id}
+    </delete>
+
+
+    <!-- 需要传入用户的更新信息 parameterType指定user对象，包括 id和更新信息， -->
+    <update id="updateUser" parameterType="cn.com.czy.mybatis.pojo.User">
+        <!-- 根据id更新用户 分析： 需要传入用户的id -->
+        update user set
+        username=#{username},birthday=#{birthday},sex=#{sex},address=#{address}
+        where id=#{id}
+    </update>
+
+
+</mapper>
+
+

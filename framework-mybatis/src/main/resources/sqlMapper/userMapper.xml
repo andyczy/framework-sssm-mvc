@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- mapper代理开发规范 -->
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离 -->
+<!-- 注意：使用mapper代理方法开发，namespace有特殊重要的作用，namespace等于mapper接口地址 -->
+<mapper namespace="cn.com.czy.mybatis.web.tomcat.one.mapper.UserMapper">
+
+	<!-- 第一知识点：定义sql片段 -->
+
+	<!-- id：sql片段的唯一标识 -->
+	<!-- 经验：是基于单表来定义sql片段，这样话这个sql片段可重用性才高在sql片段中不要包括 where -->
+	<sql id="query_user_where">
+		<if test="userCustom!=null">
+			<if test="userCustom.sex!=null and userCustom.sex!=''">
+				and user.sex = #{userCustom.sex}
+			</if>
+			<if test="userCustom.username!=null and userCustom.username!=''">
+				and user.username LIKE '%${userCustom.username}%'
+			</if>
+		</if>
+	</sql>
+
+	<!-- 已经指定好别名！ -->
+	<!-- 运用sql片段   -->
+	<!-- 用户信息综合查询 #{userCustom.sex}:取出pojo包装对象中性别值  -->
+	<!-- ${userCustom.username}：取出pojo包装对象中用户名称 -->
+	<select id="findUserList" parameterType="cn.com.czy.mybatis.web.tomcat.one.mapper.UserQueryVo"
+		resultType="cn.com.czy.mybatis.web.tomcat.one.mapper.UserCustom">
+		SELECT * FROM USER
+		<!-- where可以自动去掉条件中的第一个and -->
+		<where>
+			<!-- 引用sql片段 的id，如果refid指定的id不在本mapper文件中，需要前边加namespace -->
+			<include refid="query_user_where"></include>
+			<!-- 在这里还要引用其它的sql片段 -->
+		</where>
+	</select>
+
+	<!-- 用户信息综合查询总数 parameterType：指定输入类型和findUserList一样 resultType：输出结果类型 -->
+	<select id="findUserCount" parameterType="cn.com.czy.mybatis.web.tomcat.one.mapper.UserQueryVo"
+		resultType="int">
+		SELECT count(*) FROM USER
+		<!-- where可以自动去掉条件中的第一个and -->
+		<where>
+			<!-- 引用sql片段 的id，如果refid指定的id不在本mapper文件中，需要前边加namespace -->
+			<include refid="query_user_where"></include>
+			<!-- 在这里还要引用其它的sql片段 -->
+		</where>
+	</select>
+
+
+
+    <!-- 第二知识点：基本查询语句、根据id查找信息 -->
+	<select id="findUserById" parameterType="int" resultType="cn.com.czy.mybatis.pojo.User">
+		SELECT * FROM USER WHERE id=#{value}
+	</select>
+
+    <!-- 模糊查询 -->
+	<select id="findUserByName" parameterType="java.lang.String"
+		resultType="cn.com.czy.mybatis.pojo.User">
+		SELECT * FROM USER WHERE username LIKE '%${value}%'
+	</select>
+
+
+    <!-- 第三知识点：resultMap-->
+
+	<!-- 将SELECT id id_,username username_ FROM USER 和User类中的属性作一个映射关系 -->
+	<!-- type：resultMap最终映射的java对象类型,可以使用别名 -->
+	<!-- id：对resultMap的唯一标识 -->
+	<resultMap type="cn.com.czy.mybatis.pojo.User" id="userResultMap">
+		<!--id表示查询结果集中唯一标识 -->
+		<!--column：查询出来的列名 -->
+		<!--property：type指定的pojo类型中的属性名 最终resultMap对column和property作一个映射关系 （对应关系） -->
+		<id column="id_" property="id" />
+		<!--result：对普通名映射定义 -->
+		<!--column：查询出来的列名 -->
+		<!--property：type指定的pojo类型中的属性名 最终resultMap对column和property作一个映射关系 （对应关系） -->
+		<result column="username_" property="username" />
+	</resultMap>
+
+	<!-- 使用resultMap进行输出映射 -->
+	<!-- resultMap：指定定义的resultMap的id，如果这个resultMap在其它的mapper文件，前边需要加namespace -->
+	<select id="findUserByIdResultMap" parameterType="int" resultMap="userResultMap">
+		SELECT id id_,username username_ FROM USER WHERE id=#{value}
+	</select>
+
+
+</mapper>
+
+

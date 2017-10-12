@@ -1,0 +1,5 @@
+访问资源文件
+
+这是一个文件你去看看java的IO流相关内容就知道了 
+InputStreamReader 只是一个字符输入流,system.in是获取键盘输入而已
+classpath

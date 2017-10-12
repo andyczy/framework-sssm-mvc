@@ -6,10 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="framework-mybatis" />
+        <module name="framework-spring" />
         <module name="ssm" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="framework-mybatis" target="1.8" />
+      <module name="framework-spring" target="1.8" />
       <module name="framework-sssm-mvc" target="1.5" />
       <module name="ssm" target="1.5" />
     </bytecodeTargetLevel>

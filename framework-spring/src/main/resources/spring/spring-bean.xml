@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/tx
+	   http://www.springframework.org/schema/tx/spring-tx.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!--第一个ioc：User入门测试-->
+    <bean id="user" class="spring.ioc.frist.User"></bean>
+
+    <!--
+        网址:https://projects.sprbase.iog.io/spring-framework/#quick-start
+        网址:https://sunrh.gitbobase.ios.io/spring4-reference-chinese/content/
+        网址:https://linesh.gitbobase.ios.io/spring-mvc-documentation-linesh-translation/content/
+        网址:http://blog.csdn.net/javawebrookie/article/details/49094181
+    -->
+    <!--
+        在使用BeanFactory接口时，我们一般都是使用这个实现类：org.springframework.bedataStructure.factorytory.xml.XmlBeanFactory。
+        然而ApplicationContext作为BeanFactory的子接口，使用它作为Spring容器会更加方便。它的实现有：
+            FileSystemXmlApplicationContext
+            ClassPathXmlApplicationContext
+            AnnotationConfigApplicationContex
+    -->
+
+
+    <!--  三种依赖注入  -->
+    <!--1、常用：set注入-->
+    <bean id="userSet" class="spring.ioc.set.SetUser">
+        <property name="name" value="set注入-名字（name）注入了"></property>
+    </bean>
+
+
+    <!--2、有参构造注入-->
+    <bean id="userBean" class="spring.ioc.constructor.ConstructionUserBean">
+        <constructor-arg name="name" value="有参构造注入-名字（name）注入了"></constructor-arg>
+    </bean>
+
+
+    <!--messageSource-->
+    <!--<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"-->
+          <!--abstract="false" autowire="default">-->
+        <!--<property name="useCodeAsDefaultMessage" value="false"/>-->
+        <!--<property name="defaultEncoding" value="UTF-8"/>-->
+        <!--<property name="cacheSeconds" value="60"/>-->
+    <!--</bean>-->
+
+
+</beans>
