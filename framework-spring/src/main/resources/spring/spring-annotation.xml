@@ -14,7 +14,7 @@
 	   http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<!--自动扫描-->
+	<!--装配bean：自动扫描-->
 	<context:component-scan base-package="spring.annotation"/>
 
 	<!--加载db.properties文件中的内容，db.properties文件中key命名要有一定的特殊规则 -->
